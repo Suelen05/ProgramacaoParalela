@@ -4,7 +4,7 @@
 #include <math.h>
 
 int main() {
-    long long int num_pontos = 10000000000; // 100 milhões de pontos
+    long long int num_pontos = 1000000; // 100 milhões de pontos
     long long int pontos_dentro = 0;
     double x, y;
 
