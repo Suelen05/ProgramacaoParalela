@@ -24,3 +24,6 @@ int main() {
 
     return 0;
 }
+
+// Compilação: gcc -o pi.exe pi.c 
+// Execução: ./pi.exe

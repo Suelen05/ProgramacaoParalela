@@ -79,5 +79,5 @@ int main() {
 
     return 0;  // Fim do programa
 }
-// Compilação: gcc -o pi_thread pi_thread.c -lpthread
-// Execução: ./pi_thread
+// Compilação: gcc -o pi_thread.exe pi_thread.c -lpthread
+// Execução: ./pi_thread.exe
