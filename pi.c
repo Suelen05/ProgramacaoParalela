@@ -5,7 +5,7 @@
 
 int main() {
     
-    long long int num_pontos = 1000000000; // 1 bilhao de pontos
+    long long int num_pontos = 10000000000; // 1 bilhao de pontos
     long long int pontos_dentro = 0; 
     double x, y;
 

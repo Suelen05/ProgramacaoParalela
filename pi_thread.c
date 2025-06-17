@@ -4,9 +4,9 @@
 #include <time.h>           
 
 
-#define NUM_THREADS 32
+#define NUM_THREADS 8
 
-#define NUM_PONTOS 1000000000       // 1 bilhao de pontos
+#define NUM_PONTOS 10000000000       // 1 bilhao de pontos
 
 long long int pontos_dentro = 0;        
 
