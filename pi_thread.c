@@ -1,83 +1,77 @@
-#include <stdio.h>          // Biblioteca para funções de entrada e saída (printf, etc)
-#include <stdlib.h>         // Biblioteca para funções de alocação de memória e geração de números aleatórios
-#include <pthread.h>        // Biblioteca para trabalhar com threads (pthreads)
-#include <time.h>           // Biblioteca para medir tempo de execução e criar sementes de aleatoriedade
+#include <stdio.h>          
+#include <stdlib.h>        
+#include <pthread.h>        
+#include <time.h>           
 
-// Definindo o número de threads que vamos usar (pode ajustar conforme o número de núcleos da sua máquina)
-#define NUM_THREADS 4
 
-// Definindo o número total de pontos a serem gerados no método de Monte Carlo
-#define NUM_PONTOS 100000000
+#define NUM_THREADS 2
 
-// Variável global que vai contar quantos pontos caíram dentro do círculo
-long long int pontos_dentro = 0;
+#define NUM_PONTOS 1000000000       // 1 bilhao de pontos
 
-// Variável global do tipo mutex para controlar o acesso à variável pontos_dentro (evitar condições de corrida)
-pthread_mutex_t mutex;
+long long int pontos_dentro = 0;        
 
-// Função que cada thread vai executar
+pthread_mutex_t mutex;             //mutex para controlar o acesso à variável compartilhada (para evitar condições de corrida)
+
+
 void* calcular_pi(void* arg) {
-    // Calcula quantos pontos cada thread deve gerar (divide igualmente entre as threads)
-    long long int pontos_por_thread = NUM_PONTOS / NUM_THREADS;
+    
+    long long int pontos_por_thread = NUM_PONTOS / NUM_THREADS;     //Divide o numero total de pontos pelo numero de threads
 
-    // Variável local para contar os pontos dentro do círculo, para essa thread
-    long long int local_contagem = 0;
+    long long int local_contagem = 0;                               //Pontos dentro em cada thread
 
-    // Semente exclusiva para cada thread (evita que todas usem a mesma sequência de números aleatórios)
-    unsigned int seed = time(NULL) ^ (long long int)pthread_self();
+    unsigned int seed = time(NULL) ^ (long long int)pthread_self(); // Semente de numeros aleatorios de cada thread (pra evitar que usem a mesma sequência de números aleatórios)
 
-    // Loop que gera os pontos e testa se estão dentro do círculo
-    for (long long int i = 0; i < pontos_por_thread; i++) {
-        double x = (double)rand_r(&seed) / RAND_MAX;  // Gera um número aleatório entre 0 e 1 para x
-        double y = (double)rand_r(&seed) / RAND_MAX;  // Gera um número aleatório entre 0 e 1 para y
+    
+    for (long long int i = 0; i < pontos_por_thread; i++) {         //Gera as cordenadas aleatorias 
+        double x = (double)rand_r(&seed) / RAND_MAX;  
+        double y = (double)rand_r(&seed) / RAND_MAX;  
 
-        // Verifica se o ponto (x, y) está dentro do círculo de raio 1
-        if ((x * x + y * y) <= 1.0) {
-            local_contagem++;  // Incrementa a contagem local de pontos dentro do círculo
+        if ((x * x + y * y) <= 1.0) {   // Verifica se a cordenada ta dentro do círculo
+            local_contagem++; 
         }
     }
 
-    // Entra na região crítica para atualizar a variável global de forma segura
+    // trava mutex para atualizar a variável global 
     pthread_mutex_lock(&mutex);
     pontos_dentro += local_contagem;
     pthread_mutex_unlock(&mutex);
 
-    // Finaliza a execução da thread
-    pthread_exit(NULL);
+
+    pthread_exit(NULL); // Finaliza a thread
 }
 
 int main() {
-    pthread_t threads[NUM_THREADS];  // Declaração do vetor de threads
-    pthread_mutex_init(&mutex, NULL);  // Inicializa o mutex
+    pthread_t threads[NUM_THREADS];     // cria o vetor de threads
+    pthread_mutex_init(&mutex, NULL);   // Inicializa o mutex
 
-    clock_t inicio = clock();  // Marca o tempo de início da execução
+    clock_t inicio = clock();           // Marca o tempo de início para a comparação
 
-    // Cria as threads
+    
     for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_create(&threads[i], NULL, calcular_pi, NULL);  // Cada thread executa a função calcular_pi
+        pthread_create(&threads[i], NULL, calcular_pi, NULL);  //Cria as threads e executa a função calcular_pi
     }
 
-    // Aguarda todas as threads terminarem
+   
     for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_join(threads[i], NULL);
+        pthread_join(threads[i], NULL);     // Aguarda todas as threads terminarem
     }
 
     clock_t fim = clock();  // Marca o tempo de término da execução
 
-    // Calcula a estimativa final de Pi
-    double pi = 4.0 * pontos_dentro / NUM_PONTOS;
+    
+    double pi = 4.0 * pontos_dentro / NUM_PONTOS;   // Calcula a estimativa de Pi
 
-    // Calcula o tempo total de execução
-    double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+    
+    double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC; // Calcula o tempo total de execução
 
-    // Exibe o resultado
+
     printf("Estimativa de Pi (pthreads): %lf\n", pi);
     printf("Tempo de execução: %.2f segundos\n", tempo);
 
-    // Destroi o mutex
-    pthread_mutex_destroy(&mutex);
+    
+    pthread_mutex_destroy(&mutex);  // Destroi o mutex
 
-    return 0;  // Fim do programa
+    return 0; 
 }
 // Compilação: gcc -o pi_thread.exe pi_thread.c -lpthread
 // Execução: ./pi_thread.exe

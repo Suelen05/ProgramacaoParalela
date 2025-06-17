@@ -4,23 +4,31 @@
 #include <math.h> 
 
 int main() {
-    long long int num_pontos = 100000000; // 100 milhões de pontos
-    long long int pontos_dentro = 0; // Contador de pontos dentro do círculo
-    double x, y; // Coordenadas dos pontos gerados
+    
+    long long int num_pontos = 1000000000; // 1 bilhao de pontos
+    long long int pontos_dentro = 0; 
+    double x, y;
 
-    srand(time(NULL)); // Semente para o gerador de números aleatórios
+    clock_t inicio = clock();
 
-    for (long long int i = 0; i < num_pontos; i++) { // Loop para gerar os pontos
-        x = (double)rand() / RAND_MAX; // Gera um número aleatório entre 0 e 1 para x
-        y = (double)rand() / RAND_MAX; // Gera um número aleatório entre 0 e 1 para y
+    srand(time(NULL)); //gera números aleatórios
 
-        if ((x * x + y * y) <= 1.0) { // Verifica se o ponto (x, y) está dentro do círculo de raio 1
+    for (long long int i = 0; i < num_pontos; i++) { //Gera as cordenadas aleatorias 
+        x = (double)rand() / RAND_MAX; 
+        y = (double)rand() / RAND_MAX; 
+
+        if ((x * x + y * y) <= 1.0) { // Verifica se o ponto esta no circulo
             pontos_dentro++;
         }
     }
 
-    double pi = 4.0 * pontos_dentro / num_pontos; // Calcula a estimativa de Pi
-    printf("Estimativa de Pi: %lf\n", pi); 
+    clock_t fim = clock();
+
+    double pi = 4.0 * pontos_dentro / num_pontos;           // Calcula a estimativa de Pi
+    double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC; // Calcula o tempo total de execução
+
+    printf("Estimativa de Pi: %lf\n", pi);
+    printf("Tempo de execução: %.2f segundos\n", tempo); 
 
     return 0;
 }
