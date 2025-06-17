@@ -4,7 +4,7 @@
 #include <time.h>           
 
 
-#define NUM_THREADS 2
+#define NUM_THREADS 32
 
 #define NUM_PONTOS 1000000000       // 1 bilhao de pontos
 
