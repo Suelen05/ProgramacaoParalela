@@ -114,6 +114,8 @@ Se quiser mudar, basta alterar o valor dessa constante para o número desejado. 
 
 Depois de alterar, recompile o código.
 
+---
+
 ### ✅ Alterando o número de threads (apenas no código paralelo)
 
 No código com pthreads, o número de threads também está definido por uma constante:
@@ -130,6 +132,8 @@ Se quiser testar com outra quantidade (exemplo: 8, 16, 32 threads), é só alter
 
 Depois de alterar, recompile o código.
 
+---
+
 ### ✅ Resumo
 
 | Modificação          | Onde alterar                                           | Precisa recompilar? |
@@ -137,6 +141,7 @@ Depois de alterar, recompile o código.
 | Quantidade de pontos | Valor da constante `NUM_PONTOS`                        | ✅ Sim               |
 | Número de threads    | Valor da constante `NUM_THREADS` (somente no paralelo) | ✅ Sim               |
 
+---
 
 ## 📊 Análise Detalhada dos Resultados
 
