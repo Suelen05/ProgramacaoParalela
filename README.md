@@ -30,13 +30,13 @@ O algoritmo consiste em:
 
 Todos os testes de desempenho foram realizados em um ambiente **virtualizado** utilizando o **VirtualBox**, rodando o sistema **Kali Linux (amd64)**.
 
-### Configuração da máquina virtual (VM):
+### Configuração da máquina virtual (VM)
 
 - **Sistema Operacional:** Kali Linux (amd64)
 - **CPUs alocadas:** 24 CPUs virtuais
 - **Memória RAM alocada:** 107.284 MB (~104,8 GB)
 
-### Configuração da máquina host (processador físico):
+### Configuração da máquina host (processador físico)
 
 - **Modelo de CPU:** Intel com arquitetura híbrida (Performance e Efficient cores)
 - **Número de núcleos físicos:** 24 núcleos (8 Performance-cores + 16 Efficient-cores)
@@ -50,19 +50,93 @@ Todos os testes de desempenho foram realizados em um ambiente **virtualizado** u
 
 MonteCarlo_PI/
 
-- pi.c / # Programa sequencial
-- pi_thread / # Programa em paralelo
+- pi.c --> Programa sequencial
+- pi_thread --> Programa em paralelo
 
-- resultados / # Pasta com os resultados de execução (prints de saída)
+- resultados --> Pasta com os resultados de execução (prints de saída)
 
-    - 1.000.000.000 / # Resultados com 1 Bilhão de pontos
-    - 10.000.000.000 / # Resultados com 10 Bilhões de pontos
-- executaveis / # Arquivos .exe gerados (compilados), separados por quantidade de pontos
-    - 1.000.000.000 / # Resultados com 1 Bilhão de pontos
-    - 10.000.000.000 / # Resultados com 10 Bilhões de pontos
-- README.md / # Este arquivo
+  - 1.000.000.000 --> Resultados com 1 Bilhão de pontos
+  - 10.000.000.000 --> Resultados com 10 Bilhões de pontos
+- executaveis --> Arquivos .exe gerados (compilados), separados por quantidade de pontos
+  - 1.000.000.000 --> Resultados com 1 Bilhão de pontos
+  - 10.000.000.000 --> Resultados com 10 Bilhões de pontos
+- README.md --> Este arquivo
 
 ---
+
+## ⚙️ Compilação e Execução
+
+### ✅ Compilando os códigos
+
+#### Versão Sequencial
+
+```bash
+gcc -o pi.exe pi.c 
+```
+
+#### Versão Paralela:
+
+```bash
+gcc -o pi_thread.exe pi_thread.c -lpthread
+```
+
+### ✅ Executando os programas
+
+#### Versão Sequencial
+
+```bash
+./pi.exe
+```
+
+#### Versão Paralela
+
+```bash
+./pi_thread.exe
+```
+
+---
+
+## 📝 Como alterar a quantidade de pontos e de threads
+
+### ✅ Alterando o número de pontos a serem gerados (precisão do cálculo)
+
+Em ambos os códigos (sequencial e paralelo), o número total de pontos está definido em uma constante, geralmente chamada:
+
+``` c
+#define NUM_PONTOS 1000000000  // Exemplo: 1 bilhão de pontos
+```
+
+Se quiser mudar, basta alterar o valor dessa constante para o número desejado. Exemplo:
+
+``` c
+#define NUM_PONTOS 10000000000  // Agora com 10 bilhões de pontos
+```
+
+Depois de alterar, recompile o código.
+
+### ✅ Alterando o número de threads (apenas no código paralelo)
+
+No código com pthreads, o número de threads também está definido por uma constante:
+
+``` c
+#define NUM_THREADS 4  // Exemplo: 4 threads
+```
+
+Se quiser testar com outra quantidade (exemplo: 8, 16, 32 threads), é só alterar o valor:
+
+``` c
+#define NUM_THREADS 16  // Agora com 16 threads
+```
+
+Depois de alterar, recompile o código.
+
+### ✅ Resumo
+
+| Modificação          | Onde alterar                                           | Precisa recompilar? |
+| -------------------- | ------------------------------------------------------ | ------------------- |
+| Quantidade de pontos | Valor da constante `NUM_PONTOS`                        | ✅ Sim               |
+| Número de threads    | Valor da constante `NUM_THREADS` (somente no paralelo) | ✅ Sim               |
+
 
 ## 📊 Análise Detalhada dos Resultados
 
@@ -72,9 +146,9 @@ Isso permitiu obter uma média mais confiável dos tempos de execução, reduzin
 
 ---
 
-### 📌 Tempos Médios Obtidos (em segundos):
+### 📌 Tempos Médios Obtidos (em segundos)
 
-#### ✅ 1 Bilhão de Pontos:
+#### ✅ 1 Bilhão de Pontos
 
 | Nº de Threads | Média de Tempo (s) |
 |---|---|
@@ -87,7 +161,7 @@ Isso permitiu obter uma média mais confiável dos tempos de execução, reduzin
 
 ---
 
-#### ✅ 10 Bilhões de Pontos:
+#### ✅ 10 Bilhões de Pontos
 
 | Nº de Threads | Média de Tempo (s) |
 |---|---|
@@ -100,7 +174,7 @@ Isso permitiu obter uma média mais confiável dos tempos de execução, reduzin
 
 ---
 
-### 📌 Observações Principais:
+### 📌 Observações Principais
 
 - **Ganho de desempenho significativo ao passar de 1 para 2 threads**, com speedups superiores a 2x.
 - **A partir de 4 threads**, a eficiência diminuiu consideravelmente, indicando que o programa passou a sofrer com overhead de sincronização (causado principalmente pelo uso de mutex) e limitações da máquina virtual.
@@ -111,7 +185,7 @@ Isso permitiu obter uma média mais confiável dos tempos de execução, reduzin
 
 ---
 
-### 📌 Influência do Ambiente de Testes:
+### 📌 Influência do Ambiente de Testes
 
 > É importante destacar que **todos os testes foram executados em um ambiente virtualizado (VirtualBox)**, rodando o sistema **Kali Linux (amd64)**, com **24 CPUs virtuais alocadas** e **107.284 MB (~104,8 GB) de memória**.
 
@@ -124,7 +198,7 @@ Essa virtualização certamente introduziu um overhead adicional e influenciou o
 
 ---
 
-### 📌 Conclusão:
+### 📌 Conclusão
 
 Apesar das limitações de ambiente, o projeto demonstrou:
 
@@ -133,8 +207,6 @@ Apesar das limitações de ambiente, o projeto demonstrou:
 ✅ Importância de ajustar o número de threads de acordo com a arquitetura e ambiente de execução.
 
 Essa análise contribuiu para o entendimento prático dos conceitos de **paralelismo, sincronização e escalabilidade**.
-
-
 
 ## 📌 Observação Final
 
