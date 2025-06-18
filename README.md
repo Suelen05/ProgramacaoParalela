@@ -50,17 +50,17 @@ Todos os testes de desempenho foram realizados em um ambiente **virtualizado** u
 
 MonteCarlo_PI/
 
-- pi.c / # Programa sequencial
-- pi_thread / # Programa em paralelo
+- pi.c --> Programa sequencial
+- pi_thread --> Programa em paralelo
 
-- resultados / # Pasta com os resultados de execução (prints de saída)
+- resultados --> Pasta com os resultados de execução (prints de saída)
 
-    - 1.000.000.000 / # Resultados com 1 Bilhão de pontos
-    - 10.000.000.000 / # Resultados com 10 Bilhões de pontos
-- executaveis / # Arquivos .exe gerados (compilados), separados por quantidade de pontos
-    - 1.000.000.000 / # Resultados com 1 Bilhão de pontos
-    - 10.000.000.000 / # Resultados com 10 Bilhões de pontos
-- README.md / # Este arquivo
+    - 1.000.000.000 --> Resultados com 1 Bilhão de pontos
+    - 10.000.000.000 --> Resultados com 10 Bilhões de pontos
+- executaveis --> Arquivos .exe gerados (compilados), separados por quantidade de pontos
+    - 1.000.000.000 --> Resultados com 1 Bilhão de pontos
+    - 10.000.000.000 --> Resultados com 10 Bilhões de pontos
+- README.md --> Este arquivo
 
 ---
 
